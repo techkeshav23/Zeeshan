@@ -7,6 +7,7 @@ import MessagesPage from './components/MessagesPage'
 import AboutPage from './components/AboutPage'
 import BottomNav from './components/BottomNav'
 import Snowfall from './components/Snowfall'
+import WelcomePopup from './components/WelcomePopup'
 import { soundManager } from './utils/sounds'
 
 const pageVariants = {
@@ -17,34 +18,21 @@ const pageVariants = {
 
 function App() {
   const [activePage, setActivePage] = useState('home')
+  const [showWelcome, setShowWelcome] = useState(true)
+
+  const handleCloseWelcome = async () => {
+    setShowWelcome(false)
+    try {
+      await soundManager.playPageMusic(activePage)
+    } catch (e) {
+      console.log('Audio start failed:', e)
+    }
+  }
 
   useEffect(() => {
-    let hasStarted = false
-    
-    const enableAudio = async () => {
-      if (hasStarted) return
-      hasStarted = true
-      
-      try {
-        await soundManager.playPageMusic('home')
-      } catch (e) {
-        console.log('Audio autostart failed:', e)
-      }
-    }
-
-    // Listen for any user interaction to start audio
-    const events = ['click', 'touchstart', 'keydown', 'scroll', 'mousemove', 'mousedown', 'pointerdown']
-    
-    const handleInteraction = () => {
-      enableAudio()
-      events.forEach(event => window.removeEventListener(event, handleInteraction))
-    }
-
-    events.forEach(event => window.addEventListener(event, handleInteraction, { passive: true, capture: true }))
-
     // Restart music from beginning when tab becomes visible again
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible' && hasStarted) {
+      if (document.visibilityState === 'visible' && !showWelcome) {
         // Always restart song from beginning when coming back to tab
         soundManager.playPageMusic(activePage)
       }
@@ -52,10 +40,9 @@ function App() {
     document.addEventListener('visibilitychange', handleVisibilityChange)
 
     return () => {
-      events.forEach(event => window.removeEventListener(event, handleInteraction, { capture: true }))
       document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
-  }, [activePage])
+  }, [activePage, showWelcome])
 
   const handleNavigate = (page) => {
     setActivePage(page)
@@ -77,6 +64,9 @@ function App() {
   return (
     <div className="h-[100dvh] bg-christmas-dark text-white flex justify-center relative overflow-hidden">
       <Snowfall />
+      
+      {/* Welcome Popup */}
+      <WelcomePopup isOpen={showWelcome} onClose={handleCloseWelcome} />
       
       {/* Ambient Christmas Glow */}
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-christmas-red/10 rounded-full blur-[150px] pointer-events-none" />
