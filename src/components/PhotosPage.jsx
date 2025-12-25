@@ -5,12 +5,14 @@ import PhotoLightbox from './PhotoLightbox'
 import { soundManager } from '../utils/sounds'
 
 const photos = [
-  { id: 1, src: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=800&auto=format&fit=crop', caption: 'Good times together' },
-  { id: 2, src: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=800&auto=format&fit=crop', caption: 'Adventures await' },
-  { id: 3, src: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=800&auto=format&fit=crop', caption: 'Unforgettable moments' },
-  { id: 4, src: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=800&auto=format&fit=crop', caption: 'The squad' },
-  { id: 5, src: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800&auto=format&fit=crop', caption: 'Night vibes' },
-  { id: 6, src: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=800&auto=format&fit=crop', caption: 'Celebrations' },
+  { id: 1, src: '/images/WhatsApp Image 2025-12-25 at 12.21.18 PM.jpeg', caption: 'Special moments ❤️' },
+  { id: 2, src: '/images/WhatsApp Image 2025-12-25 at 12.21.19 PM.jpeg', caption: 'Good times together' },
+  { id: 3, src: '/images/WhatsApp Image 2025-12-25 at 12.21.19 PM (1).jpeg', caption: 'Memories to cherish' },
+  { id: 4, src: '/images/WhatsApp Image 2025-12-25 at 12.21.19 PM (2).jpeg', caption: 'Unforgettable moments' },
+  { id: 5, src: '/images/WhatsApp Image 2025-12-25 at 12.21.20 PM.jpeg', caption: 'Always smiling' },
+  { id: 6, src: '/images/WhatsApp Image 2025-12-25 at 12.21.20 PM (1).jpeg', caption: 'Making memories' },
+  { id: 7, src: '/images/WhatsApp Image 2025-12-25 at 12.21.21 PM.jpeg', caption: 'Best times' },
+  { id: 8, src: '/images/WhatsApp Image 2025-12-25 at 12.21.21 PM (1).jpeg', caption: 'Forever grateful' },
 ]
 
 const containerVariants = {
