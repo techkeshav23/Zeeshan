@@ -142,10 +142,22 @@ function HomePage({ onNavigate }) {
   }, [])
 
   // Handle gift reveal with sound
+  const [showExplosion, setShowExplosion] = useState(false)
+  
   const handleReveal = () => {
     if (!isRevealed) {
       soundManager.playUnwrap()
-      setIsRevealed(true)
+      setShowExplosion(true)
+      
+      // Show the revealed content after explosion
+      setTimeout(() => {
+        setIsRevealed(true)
+      }, 800)
+      
+      // Hide explosion after animation
+      setTimeout(() => {
+        setShowExplosion(false)
+      }, 1500)
     }
   }
 
@@ -227,11 +239,153 @@ function HomePage({ onNavigate }) {
         onClick={handleReveal}
         className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden cursor-pointer"
         initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
+        animate={{ 
+          opacity: 1, 
+          scale: 1,
+          x: showExplosion ? [0, -10, 10, -10, 10, -5, 5, 0] : 0,
+          y: showExplosion ? [0, -5, 5, -5, 5, 0] : 0
+        }}
+        transition={{ 
+          duration: showExplosion ? 0.5 : 0.5, 
+          delay: showExplosion ? 0 : 0.2 
+        }}
         whileHover={!isRevealed ? { scale: 1.02 } : {}}
         whileTap={!isRevealed ? { scale: 0.98 } : {}}
       >
+        {/* BOOM Explosion Effect */}
+        <AnimatePresence>
+          {showExplosion && (
+            <>
+              {/* Screen Flash */}
+              <motion.div
+                className="fixed inset-0 z-[200] bg-white pointer-events-none"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 1, 0.8, 0] }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              />
+              
+              {/* Central Explosion */}
+              <motion.div
+                className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                {/* Explosion rings */}
+                {[...Array(4)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute rounded-full border-4 border-christmas-gold"
+                    initial={{ width: 0, height: 0, opacity: 1 }}
+                    animate={{ 
+                      width: [0, 300 + i * 100], 
+                      height: [0, 300 + i * 100], 
+                      opacity: [1, 0],
+                      borderWidth: [8, 0]
+                    }}
+                    transition={{ duration: 0.8, delay: i * 0.1, ease: 'easeOut' }}
+                  />
+                ))}
+                
+                {/* Fire burst */}
+                <motion.div
+                  className="absolute w-40 h-40 rounded-full"
+                  style={{
+                    background: 'radial-gradient(circle, #ff6b35 0%, #f7c59f 30%, #ff8c42 60%, transparent 70%)'
+                  }}
+                  initial={{ scale: 0, opacity: 1 }}
+                  animate={{ scale: [0, 3, 4], opacity: [1, 0.8, 0] }}
+                  transition={{ duration: 0.6, ease: 'easeOut' }}
+                />
+                
+                {/* Sparks/Particles */}
+                {[...Array(20)].map((_, i) => {
+                  const angle = (i / 20) * 360
+                  const distance = 150 + Math.random() * 100
+                  const x = Math.cos(angle * Math.PI / 180) * distance
+                  const y = Math.sin(angle * Math.PI / 180) * distance
+                  const colors = ['#ff6b35', '#f7c59f', '#ffd700', '#ff4444', '#ffaa00']
+                  const color = colors[Math.floor(Math.random() * colors.length)]
+                  
+                  return (
+                    <motion.div
+                      key={i}
+                      className="absolute w-3 h-3 rounded-full"
+                      style={{ backgroundColor: color }}
+                      initial={{ x: 0, y: 0, scale: 1, opacity: 1 }}
+                      animate={{ 
+                        x: x, 
+                        y: y, 
+                        scale: [1, 1.5, 0],
+                        opacity: [1, 1, 0],
+                        rotate: Math.random() * 720
+                      }}
+                      transition={{ 
+                        duration: 0.8 + Math.random() * 0.4, 
+                        ease: 'easeOut',
+                        delay: Math.random() * 0.1
+                      }}
+                    />
+                  )
+                })}
+                
+                {/* Confetti pieces */}
+                {[...Array(30)].map((_, i) => {
+                  const angle = Math.random() * 360
+                  const distance = 100 + Math.random() * 150
+                  const x = Math.cos(angle * Math.PI / 180) * distance
+                  const y = Math.sin(angle * Math.PI / 180) * distance - 50
+                  const colors = ['#c41e3a', '#1d4d2b', '#d4af37', '#ff6b6b', '#4ecdc4', '#ffe66d']
+                  const color = colors[Math.floor(Math.random() * colors.length)]
+                  const size = 4 + Math.random() * 8
+                  
+                  return (
+                    <motion.div
+                      key={`confetti-${i}`}
+                      className="absolute"
+                      style={{ 
+                        backgroundColor: color,
+                        width: size,
+                        height: size * 1.5,
+                        borderRadius: '2px'
+                      }}
+                      initial={{ x: 0, y: 0, rotate: 0, opacity: 1 }}
+                      animate={{ 
+                        x: x, 
+                        y: [y, y + 100], 
+                        rotate: Math.random() * 720,
+                        opacity: [1, 1, 0]
+                      }}
+                      transition={{ 
+                        duration: 1.2 + Math.random() * 0.5, 
+                        ease: 'easeOut',
+                        delay: 0.2 + Math.random() * 0.2
+                      }}
+                    />
+                  )
+                })}
+                
+                {/* BOOM Text */}
+                <motion.div
+                  className="absolute text-6xl font-black text-transparent bg-clip-text"
+                  style={{
+                    background: 'linear-gradient(135deg, #ffd700 0%, #ff6b35 50%, #ff4444 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    textShadow: '0 0 40px rgba(255, 107, 53, 0.8)'
+                  }}
+                  initial={{ scale: 0, rotate: -20 }}
+                  animate={{ scale: [0, 1.5, 1.2], rotate: [-20, 10, 0], opacity: [0, 1, 0] }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                >
+                  🎉 SURPRISE! 🎉
+                </motion.div>
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
         {/* Cover State */}
         <AnimatePresence>
           {!isRevealed && (

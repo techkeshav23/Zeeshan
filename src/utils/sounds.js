@@ -65,12 +65,61 @@ class SoundManager {
     oscillator.stop(this.audioContext.currentTime + 0.1)
   }
 
-  // Play unwrap sound (ascending tones)
+  // Play unwrap sound (ascending tones) with explosion effect
   playUnwrap() {
     if (this.isMuted) return
     this.init()
     
-    const notes = [523.25, 659.25, 783.99, 1046.50] // C5, E5, G5, C6
+    // Explosion boom sound
+    const createNoise = () => {
+      const bufferSize = this.audioContext.sampleRate * 0.5
+      const buffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate)
+      const data = buffer.getChannelData(0)
+      
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.1))
+      }
+      
+      const noise = this.audioContext.createBufferSource()
+      noise.buffer = buffer
+      
+      const noiseGain = this.audioContext.createGain()
+      const noiseFilter = this.audioContext.createBiquadFilter()
+      
+      noiseFilter.type = 'lowpass'
+      noiseFilter.frequency.value = 500
+      
+      noise.connect(noiseFilter)
+      noiseFilter.connect(noiseGain)
+      noiseGain.connect(this.audioContext.destination)
+      
+      noiseGain.gain.setValueAtTime(0.4, this.audioContext.currentTime)
+      noiseGain.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.5)
+      
+      noise.start()
+    }
+    
+    // Low frequency boom
+    const boom = this.audioContext.createOscillator()
+    const boomGain = this.audioContext.createGain()
+    
+    boom.connect(boomGain)
+    boomGain.connect(this.audioContext.destination)
+    
+    boom.frequency.setValueAtTime(150, this.audioContext.currentTime)
+    boom.frequency.exponentialRampToValueAtTime(30, this.audioContext.currentTime + 0.3)
+    boom.type = 'sine'
+    
+    boomGain.gain.setValueAtTime(0.5, this.audioContext.currentTime)
+    boomGain.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.4)
+    
+    boom.start()
+    boom.stop(this.audioContext.currentTime + 0.4)
+    
+    createNoise()
+    
+    // Celebration tones after explosion
+    const notes = [523.25, 659.25, 783.99, 1046.50, 1318.51] // C5, E5, G5, C6, E6
     
     notes.forEach((freq, i) => {
       setTimeout(() => {
