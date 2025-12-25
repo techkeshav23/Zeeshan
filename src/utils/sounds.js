@@ -10,6 +10,25 @@ const pageSongs = {
   about: '/music/about.mp3'
 }
 
+// Preloaded audio cache
+const audioCache = {}
+
+// Preload all songs on page load for faster playback
+function preloadAllSongs() {
+  Object.entries(pageSongs).forEach(([page, src]) => {
+    const audio = new Audio()
+    audio.preload = 'auto'
+    audio.src = src
+    audio.load()
+    audioCache[page] = audio
+  })
+}
+
+// Start preloading immediately
+if (typeof window !== 'undefined') {
+  preloadAllSongs()
+}
+
 class SoundManager {
   constructor() {
     this.audioContext = null
@@ -136,9 +155,16 @@ class SoundManager {
     }
     
     this.currentPage = page
-    const songPath = pageSongs[page] || pageSongs.home
     
-    this.currentAudio = new Audio(songPath)
+    // Use preloaded audio from cache if available, otherwise create new
+    if (audioCache[page]) {
+      this.currentAudio = audioCache[page]
+      this.currentAudio.currentTime = 0
+    } else {
+      const songPath = pageSongs[page] || pageSongs.home
+      this.currentAudio = new Audio(songPath)
+    }
+    
     this.currentAudio.loop = true
     this.currentAudio.volume = 0.5
     
