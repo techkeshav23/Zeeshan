@@ -297,7 +297,7 @@ function HomePage({ onNavigate }) {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <img 
-                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop" 
+                src="/images/WhatsApp Image 2025-12-25 at 12.21.20 PM (1).jpeg" 
                 alt="Zeeshan"
                 className="w-full h-full object-cover rounded-2xl"
               />
