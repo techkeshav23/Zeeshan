@@ -17,13 +17,12 @@ const pageVariants = {
 
 function App() {
   const [activePage, setActivePage] = useState('home')
+  const [hasInteracted, setHasInteracted] = useState(false)
 
   useEffect(() => {
-    let hasStarted = false
-    
     const enableAudio = async () => {
-      if (hasStarted || soundManager.isMusicOn()) return
-      hasStarted = true
+      if (hasInteracted || soundManager.isMusicOn()) return
+      setHasInteracted(true)
       
       try {
         await soundManager.playPageMusic('home')
@@ -40,12 +39,14 @@ function App() {
       events.forEach(event => window.removeEventListener(event, handleInteraction))
     }
 
-    events.forEach(event => window.addEventListener(event, handleInteraction, { passive: true }))
+    if (!hasInteracted) {
+      events.forEach(event => window.addEventListener(event, handleInteraction, { passive: true }))
+    }
 
-    // Restart music from beginning when tab becomes visible again
+    // Restart music from beginning when tab becomes visible again (only if user has already interacted)
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        // Always restart from beginning when coming back to tab
+      if (document.visibilityState === 'visible' && hasInteracted) {
+        // Always restart song from beginning when coming back to tab
         soundManager.playPageMusic(activePage)
       }
     }
@@ -55,7 +56,7 @@ function App() {
       events.forEach(event => window.removeEventListener(event, handleInteraction))
       document.removeEventListener('visibilitychange', handleVisibilityChange)
     }
-  }, [activePage])
+  }, [activePage, hasInteracted])
 
   const handleNavigate = (page) => {
     setActivePage(page)

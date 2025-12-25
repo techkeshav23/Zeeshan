@@ -6,43 +6,63 @@ import { soundManager } from '../utils/sounds'
 const movies = [
   {
     id: 1,
-    title: 'Fight Club',
-    year: '1999',
-    poster: 'https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg',
-    rating: '8.8',
-    note: 'Mind-bending storytelling at its finest',
-    imdbId: 'tt0137523',
-    letterboxdSlug: 'fight-club'
+    title: 'Dhurandhar',
+    year: '2024',
+    poster: 'https://image.tmdb.org/t/p/w500/iQBSueXBmCFVsZBfvUwTlVJj6Hd.jpg',
+    rating: '4',
+    note: 'Intense action thriller',
+    imdbId: 'tt27914893',
+    letterboxdSlug: 'dhurandhar'
   },
   {
     id: 2,
-    title: 'Parasite',
-    year: '2019',
-    poster: 'https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg',
-    rating: '8.5',
-    note: 'A masterpiece of modern cinema',
-    imdbId: 'tt6751668',
-    letterboxdSlug: 'parasite-2019'
+    title: 'Regretting You',
+    year: '2025',
+    poster: 'https://image.tmdb.org/t/p/w500/6HLViCb0vqgZfmjZ4TQvLnRFvmd.jpg',
+    rating: '3',
+    note: 'Emotional drama',
+    imdbId: 'tt21059498',
+    letterboxdSlug: 'regretting-you'
   },
   {
     id: 3,
-    title: 'The Shawshank Redemption',
-    year: '1994',
-    poster: 'https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg',
-    rating: '9.3',
-    note: 'The timeless story of hope',
-    imdbId: 'tt0111161',
-    letterboxdSlug: 'the-shawshank-redemption'
+    title: 'Sisu',
+    year: '2022',
+    poster: 'https://image.tmdb.org/t/p/w500/ygO9lowFMXWymATCrhoQXd6gCEh.jpg',
+    rating: '5',
+    note: 'Road to Revenge - Epic action',
+    imdbId: 'tt14846026',
+    letterboxdSlug: 'sisu'
   },
   {
     id: 4,
-    title: 'Goodfellas',
-    year: '1990',
-    poster: 'https://image.tmdb.org/t/p/w500/aKuFiU82s5ISJpGZp7YkIr3kCUd.jpg',
-    rating: '8.7',
-    note: 'Scorsese at his very best',
-    imdbId: 'tt0099685',
-    letterboxdSlug: 'goodfellas'
+    title: 'Chainsaw Man',
+    year: '2022',
+    poster: 'https://image.tmdb.org/t/p/w500/yVtx7Xn9UxNJqvG2BkvhCcmed9S.jpg',
+    rating: '5',
+    note: 'Anime masterpiece',
+    imdbId: 'tt13223398',
+    letterboxdSlug: 'chainsaw-man'
+  },
+  {
+    id: 5,
+    title: 'One Battle After Another',
+    year: '2024',
+    poster: 'https://image.tmdb.org/t/p/w500/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg',
+    rating: '4',
+    note: 'Intense survival action',
+    imdbId: 'tt26446278',
+    letterboxdSlug: 'one-battle-after-another'
+  },
+  {
+    id: 6,
+    title: 'The Conjuring: Last Rites',
+    year: '2025',
+    poster: 'https://image.tmdb.org/t/p/w500/jCk63TUfETchEyv8lCfANWiQxNx.jpg',
+    rating: '5',
+    note: 'Terrifying horror experience',
+    imdbId: 'tt15513040',
+    letterboxdSlug: 'the-conjuring-last-rites'
   }
 ]
 
