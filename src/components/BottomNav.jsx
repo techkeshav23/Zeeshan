@@ -19,7 +19,7 @@ function BottomNav({ activePage, onNavigate }) {
   }
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 bg-christmas-dark/95 backdrop-blur-md border-t border-christmas-green/20">
+    <div className="sticky bottom-0 left-0 right-0 bg-christmas-dark/95 backdrop-blur-md border-t border-christmas-green/20 z-40 pb-[env(safe-area-inset-bottom)]">
       <nav className="flex justify-around items-center h-16">
         {navItems.map((item) => {
           const Icon = item.icon
@@ -55,8 +55,6 @@ function BottomNav({ activePage, onNavigate }) {
           )
         })}
       </nav>
-      {/* Safe area for iOS */}
-      <div className="h-[env(safe-area-inset-bottom)] bg-christmas-dark" />
     </div>
   )
 }

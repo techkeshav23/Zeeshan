@@ -75,7 +75,7 @@ function App() {
   }
 
   return (
-    <div className="h-screen bg-christmas-dark text-white flex justify-center relative">
+    <div className="h-[100dvh] bg-christmas-dark text-white flex justify-center relative overflow-hidden">
       <Snowfall />
       
       {/* Music Toggle Button */}
@@ -107,10 +107,10 @@ function App() {
       <div className="fixed bottom-0 left-1/4 w-64 h-64 bg-christmas-green/10 rounded-full blur-[120px] pointer-events-none" />
       
       {/* Mobile Container */}
-      <div className="w-full max-w-md h-full bg-christmas-dark/80 backdrop-blur-sm relative flex flex-col border-x border-christmas-green/20">
+      <div className="w-full max-w-md h-full bg-christmas-dark/80 backdrop-blur-sm relative flex flex-col border-x border-christmas-green/20 overflow-hidden">
         
         {/* Content Area */}
-        <div className="flex-1 overflow-y-auto scrollbar-hide">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide pb-safe">
           <AnimatePresence mode="wait">
             <motion.div
               key={activePage}
