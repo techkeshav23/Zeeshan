@@ -132,6 +132,7 @@ class SoundManager {
     if (this.currentAudio) {
       this.currentAudio.pause()
       this.currentAudio.currentTime = 0
+      this.currentAudio.removeEventListener('ended', this.handleLoop)
     }
     
     this.currentPage = page
@@ -140,6 +141,15 @@ class SoundManager {
     this.currentAudio = new Audio(songPath)
     this.currentAudio.loop = true
     this.currentAudio.volume = 0.5
+    
+    // Explicit loop handler as fallback
+    this.handleLoop = () => {
+      if (this.isMusicPlaying && this.currentAudio) {
+        this.currentAudio.currentTime = 0
+        this.currentAudio.play()
+      }
+    }
+    this.currentAudio.addEventListener('ended', this.handleLoop)
     
     try {
       await this.currentAudio.play()
@@ -162,6 +172,7 @@ class SoundManager {
     if (this.currentAudio) {
       this.currentAudio.pause()
       this.currentAudio.currentTime = 0
+      this.currentAudio.removeEventListener('ended', this.handleLoop)
     }
   }
 
