@@ -145,7 +145,7 @@ class SoundManager {
   }
 
   async playPageMusic(page) {
-    if (this.isMuted) return
+    if (this.isMuted) return false
     
     // Stop current audio if playing
     if (this.currentAudio) {
@@ -157,12 +157,13 @@ class SoundManager {
     this.currentPage = page
     
     // Use preloaded audio from cache if available, otherwise create new
-    if (audioCache[page]) {
+    if (audioCache[page] && audioCache[page].readyState >= 2) {
       this.currentAudio = audioCache[page]
       this.currentAudio.currentTime = 0
     } else {
       const songPath = pageSongs[page] || pageSongs.home
       this.currentAudio = new Audio(songPath)
+      this.currentAudio.preload = 'auto'
     }
     
     this.currentAudio.loop = true
@@ -172,7 +173,7 @@ class SoundManager {
     this.handleLoop = () => {
       if (this.isMusicPlaying && this.currentAudio) {
         this.currentAudio.currentTime = 0
-        this.currentAudio.play()
+        this.currentAudio.play().catch(() => {})
       }
     }
     this.currentAudio.addEventListener('ended', this.handleLoop)
@@ -180,9 +181,11 @@ class SoundManager {
     try {
       await this.currentAudio.play()
       this.isMusicPlaying = true
+      return true
     } catch (error) {
       console.log('Audio playback failed:', error)
       this.isMusicPlaying = false
+      return false
     }
   }
 
